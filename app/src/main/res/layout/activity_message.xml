@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:text="我的二维码"
-        android:textSize="18sp" />
+        android:textSize="22sp" />
 
     <ImageView
         android:id="@+id/qrcode_image"
@@ -23,4 +23,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/scan_text"
         android:background="#fff" />
+
+    <Button
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/qrcode_image"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/start_button_selector"
+        android:text="开始"
+        android:textColor="@color/white" />
 </RelativeLayout>

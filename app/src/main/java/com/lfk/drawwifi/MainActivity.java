@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = new Intent();
         switch (v.getId()) {
             case R.id.button_sent:
+                intent.setClass(MainActivity.this, ScanActivity.class);
                 break;
             case R.id.button_save:
                 intent.setClass(MainActivity.this, MessageActivity.class);
