@@ -31,7 +31,7 @@ public class MessageActivity extends AppCompatActivity {
         final int dimension = width < height ? width : height;
         mEncoder = new QRCodeEncode.Builder()
                 .setBackgroundColor(0xFFFFFF)
-                .setCodeColor(0XFFFA5050)
+                .setCodeColor(0XFF3F51B5)
                 .setOutputBitmapPadding(2)
                 .setOutputBitmapWidth(dimension)
                 .setOutputBitmapHeight(dimension)
