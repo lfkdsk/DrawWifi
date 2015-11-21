@@ -3,4 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="sentButton">#4D98FC</color>
+    <color name="saveButton">#4EC96F</color>
+    <color name="sentButton1">#1468d9</color>
+    <color name="saveButton1">#15b741</color>
+    <color name="white">#fff</color>
 </resources>

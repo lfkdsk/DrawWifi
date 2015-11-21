@@ -4,8 +4,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.lfk.drawwifi.MainActivity">
-    <com.lfk.drawwifi.Views.PaintView
-        android:id="@+id/paint"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/img_com"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/public_shareplay_index_img" />
+
+    <TextView
+        android:id="@+id/title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/img_com"
+        android:layout_centerHorizontal="true"
+        android:text="多人同步观看演示"
+        android:textSize="18sp" />
+
+    <Button
+        android:layout_marginTop="30dp"
+        android:id="@+id/button_sent"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_text"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/sent_button_seletor"
+        android:text="发起"
+        android:textColor="@color/white" />
+
+    <Button
+        android:layout_marginTop="30dp"
+        android:id="@+id/button_save"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_sent"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/save_button_selector"
+        android:text="接入"
+        android:textColor="@color/white" />
 </RelativeLayout>
