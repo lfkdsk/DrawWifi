@@ -3,6 +3,7 @@ package com.lfk.drawwifi;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -60,5 +61,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                moveTaskToBack(true);
+                break;
+        }
+        return false;
     }
 }

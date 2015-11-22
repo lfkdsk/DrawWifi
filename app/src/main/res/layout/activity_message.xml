@@ -19,12 +19,15 @@
 
     <ImageView
         android:id="@+id/qrcode_image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_below="@+id/scan_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
         android:background="#fff" />
 
     <Button
+        android:layout_marginTop="30dp"
         android:id="@+id/button_start"
         android:layout_width="240dp"
         android:layout_height="wrap_content"
