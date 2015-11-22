@@ -1,1 +1,1 @@
-include ':app', ':zxing', ':materiallog'
+include ':app', ':zxing', ':materiallog', ':cirlib'
