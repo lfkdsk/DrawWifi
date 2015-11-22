@@ -84,6 +84,8 @@ public class PaintView extends View {
     private boolean ReDoOrUnDoFlag = true;
     private PathNode pathNode;
     private ArrayList<PathNode.Node> ReDoNodes = new ArrayList<>();
+    private boolean editable = false;
+
 
     public PaintView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -398,12 +400,12 @@ public class PaintView extends View {
             try {
                 object.put("x", node.x);
                 object.put("y", node.y);
-                object.put("PC", node.PenColor);
-                object.put("PW", node.PenWidth);
-                object.put("EW", node.EraserWidth);
+//                object.put("PC", node.PenColor);
+//                object.put("PW", node.PenWidth);
+//                object.put("EW", node.EraserWidth);
                 object.put("TE", node.TouchEvent);
                 object.put("IP", node.IsPaint);
-                object.put("t", node.time);
+//                object.put("t", node.time);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -491,11 +493,11 @@ public class PaintView extends View {
                 node.x = jsonObject.getInt("x");
                 node.y = jsonObject.getInt("y");
                 node.TouchEvent = jsonObject.getInt("TE");
-                node.PenWidth = jsonObject.getInt("PW");
-                node.PenColor = jsonObject.getInt("PC");
-                node.EraserWidth = jsonObject.getInt("EW");
+//                node.PenWidth = jsonObject.getInt("PW");
+//                node.PenColor = jsonObject.getInt("PC");
+//                node.EraserWidth = jsonObject.getInt("EW");
                 node.IsPaint = jsonObject.getBoolean("IP");
-                node.time = jsonObject.getLong("t");
+//                node.time = jsonObject.getLong("t");
                 arrayList.add(node);
             }
         } catch (JSONException e) {
@@ -523,7 +525,7 @@ public class PaintView extends View {
     // 按下判断
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
-        if (!isShowing()) {
+        if (!isShowing() && editable) {
             float x = event.getX();
             float y = event.getY();
             switch (event.getAction()) {
@@ -590,6 +592,14 @@ public class PaintView extends View {
         tempToast.show();
     }
 
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+    }
+
+    public boolean isEditable() {
+        return editable;
+    }
+
     // 播放栈
     class PreviewThread implements Runnable {
         private long time;
@@ -604,7 +614,7 @@ public class PaintView extends View {
         public void run() {
             time = 0;
             IsShowing = true;
-            clean();
+//            clean();
             if (mBitmapInit != null) {
                 drawBitmapToCanvas(mBitmapInit);
             }
@@ -613,17 +623,14 @@ public class PaintView extends View {
                 float x = dip2px(node.x);
                 float y = dip2px(node.y);
 ////                Log.e("pre"+x,"pre"+y);
-                if (i < nodes.size() - 1) {
-                    time = nodes.get(i + 1).time - node.time;
-                }
                 IsPaint = node.IsPaint;
-                if (node.IsPaint) {
-                    UserInfo.PaintColor = node.PenColor;
-                    UserInfo.PaintWidth = node.PenWidth;
-                    Init_Paint(node.PenColor, node.PenWidth);
-                } else {
-                    UserInfo.EraserWidth = node.EraserWidth;
-                    Init_Eraser(node.EraserWidth);
+                if(node.IsPaint){
+//					UserInfo.PaintColor = node.PenColor;
+//					UserInfo.PaintWidth = node.PenWidth;
+                    Init_Paint(getResources().getColor(R.color.colorAccent),10);
+                }else {
+//					UserInfo.EraserWidth = node.EraserWidth;
+                    Init_Eraser(50);
                 }
                 switch (node.TouchEvent) {
                     case MotionEvent.ACTION_DOWN:

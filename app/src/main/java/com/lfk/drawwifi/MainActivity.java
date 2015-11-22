@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.lfk.drawwifi.Utils.SpUtils;
 
+import cn.bmob.v3.Bmob;
 import me.drakeet.materialdialog.MaterialDialog;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -18,6 +19,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        init();
 
         if (!SpUtils.contains(this, "name")) {
             View view = View.inflate(this, R.layout.input_time, null);
@@ -41,15 +44,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    private void init() {
+        Bmob.initialize(this, "d76a19ffd74a3ebf8d346c6eeacc94d6");
+    }
+
     @Override
     public void onClick(View v) {
         Intent intent = new Intent();
         switch (v.getId()) {
             case R.id.button_sent:
-                intent.setClass(MainActivity.this, ScanActivity.class);
+                intent.setClass(MainActivity.this, MessageActivity.class);
                 break;
             case R.id.button_save:
-                intent.setClass(MainActivity.this, MessageActivity.class);
+                intent.setClass(MainActivity.this, ScanActivity.class);
                 break;
         }
         startActivity(intent);

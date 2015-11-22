@@ -5,26 +5,26 @@ import cn.bmob.v3.BmobObject;
 /**
  * Created by liufengkai on 15/11/15.
  */
-public class Draw extends BmobObject{
+public class Draw extends BmobObject {
     private String controller;
-    private String controlled;
     private String message;
+    private boolean open;
 
-    public Draw(String controller, String controlled, String message) {
+    public Draw(String controller, String message, boolean open) {
         this.controller = controller;
-        this.controlled = controlled;
         this.message = message;
+        this.open = open;
     }
 
     public String getController() {
         return controller;
     }
 
-    public String getControlled() {
-        return controlled;
-    }
-
     public String getMessage() {
         return message;
+    }
+
+    public boolean isOpen() {
+        return open;
     }
 }

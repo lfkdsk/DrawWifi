@@ -1,6 +1,8 @@
 package com.lfk.drawwifi;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.SurfaceView;
 import android.view.Window;
@@ -10,9 +12,13 @@ import android.widget.Toast;
 import com.github.yoojia.zxing.FinderView;
 import com.github.yoojia.zxing.QRCodeScanSupport;
 
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.GetListener;
+
 public class ScanActivity extends AppCompatActivity {
     private FinderView finderView;
     private QRCodeScanSupport mQRCodeScanSupport;
+    private boolean open = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,15 +30,39 @@ public class ScanActivity extends AppCompatActivity {
         SurfaceView surfaceView = (SurfaceView) findViewById(R.id.capture_preview_view);
         mQRCodeScanSupport = new QRCodeScanSupport(surfaceView, finderView);
         // 如何处理扫描结果
-        mQRCodeScanSupport.setOnScanResultListener(new QRCodeScanSupport.OnScanResultListener() {
-            @Override
-            public void onScanResult(String notNullResult) {
-                Toast.makeText(ScanActivity.this, "扫描结果: " + notNullResult, Toast.LENGTH_SHORT).show();
+        mQRCodeScanSupport.setOnScanResultListener(notNullResult -> {
+            Toast.makeText(ScanActivity.this, "扫描结果: " + notNullResult, Toast.LENGTH_SHORT).show();
+            if (notNullResult.substring(0, 4).equals("key:") && open) {
+                BmobQuery<Draw> bmobQuery = new BmobQuery<>();
+                bmobQuery.getObject(this, notNullResult.substring(4), new GetListener<Draw>() {
+                    @Override
+                    public void onSuccess(Draw draw) {
+                        Message message = handler.obtainMessage();
+                        message.obj = notNullResult.substring(4);
+                        handler.sendMessage(message);
+                        open = false;
+                    }
+
+                    @Override
+                    public void onFailure(int i, String s) {
+
+                    }
+                });
             }
         });
-
-
     }
+
+
+    private android.os.Handler handler = new android.os.Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            Intent intent = new Intent(ScanActivity.this, DrawActivity.class);
+            intent.putExtra("key", msg.obj.toString());
+            intent.putExtra("editable", false);
+            startActivity(intent);
+        }
+    };
 
 
     @Override

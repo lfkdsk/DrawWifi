@@ -1,21 +1,29 @@
 package com.lfk.drawwifi;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Display;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.github.yoojia.zxing.QRCodeEncode;
 import com.lfk.drawwifi.Utils.SpUtils;
 
-public class MessageActivity extends AppCompatActivity {
+import cn.bmob.v3.listener.SaveListener;
+
+public class MessageActivity extends AppCompatActivity implements View.OnClickListener {
     private ImageView mQRCodeImage;
     private QRCodeEncode mEncoder;
     private DecodeTask mDecodeTask;
+    private String key = null;
+    private boolean open = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +45,47 @@ public class MessageActivity extends AppCompatActivity {
                 .setOutputBitmapHeight(dimension)
                 .build();
         mDecodeTask = new DecodeTask();
-        mDecodeTask.execute((String) SpUtils.get(this, "name", "name"));
+        if (SpUtils.contains(this, "name")) {
+            sendMessage();
+        }
+        findViewById(R.id.button_start).setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.button_start:
+                if (open) {
+                    Intent intent = new Intent(MessageActivity.this, DrawActivity.class);
+                    intent.putExtra("editable", true);
+                    startActivity(intent);
+                }
+                break;
+        }
+    }
+
+    private void sendMessage() {
+        Draw draw = new Draw((String) SpUtils.get(this, "name", "ha"), "", true);
+        draw.save(this, new SaveListener() {
+            @Override
+            public void onSuccess() {
+                Log.e("message", "success");
+                Toast.makeText(MessageActivity.this, "新建行成功", Toast.LENGTH_SHORT).show();
+                SpUtils.put(MessageActivity.this, "key", draw.getObjectId());
+                key = draw.getObjectId();
+                Log.e("key", key);
+                open = true;
+                if (key != null)
+                    mDecodeTask.execute("key:" + key);
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                if (SpUtils.contains(MessageActivity.this, "key")) {
+                    mDecodeTask.execute("key:" + SpUtils.get(MessageActivity.this, "key", "defaultkey"));
+                }
+            }
+        });
     }
 
     private class DecodeTask extends AsyncTask<String, Void, Bitmap> {
