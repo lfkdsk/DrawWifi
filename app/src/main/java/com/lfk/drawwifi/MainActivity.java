@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void init() {
-        Bmob.initialize(this, "*");
+        Bmob.initialize(this, "b1a365d5c5b10d3d3546392b17e6f04f");
     }
 
     @Override

@@ -16,7 +16,7 @@ import java.io.ByteArrayOutputStream;
  * @date :   2015-03-03
  * 二维码解码线程
  */
-public abstract class QRCodeDecodeTask extends AsyncTask<QRCodeDecodeTask.CameraPreview, Bitmap, String>{
+public abstract class QRCodeDecodeTask extends AsyncTask<QRCodeDecodeTask.CameraPreview, Bitmap, String> {
 
     private final QRCodeDecode mQRCodeDecode;
 
@@ -26,23 +26,30 @@ public abstract class QRCodeDecodeTask extends AsyncTask<QRCodeDecodeTask.Camera
 
     @Override
     final protected String doInBackground(CameraPreview... params) {
-        if (params.length == 0){
+        if (params.length == 0) {
             throw new IllegalArgumentException("Parameter required when call 'execute(CameraPreview)'; ");
         }
-        final Bitmap progress = capture(params[0]);
+        Bitmap progress;
+        try {
+            progress = capture(params[0]);
+        } catch (Exception e) {
+            return null;
+        }
+
         this.publishProgress(progress);
         return mQRCodeDecode.decode(progress);
     }
 
     @Override
     final protected void onPostExecute(String s) {
-        if (!TextUtils.isEmpty(s)){
+        if (!TextUtils.isEmpty(s)) {
             onPostDecoded(s);
         }
     }
 
     /**
      * 解码完成
+     *
      * @param result 解码完成
      */
     protected abstract void onPostDecoded(String result);
@@ -54,13 +61,14 @@ public abstract class QRCodeDecodeTask extends AsyncTask<QRCodeDecodeTask.Camera
 
     /**
      * 解码的图片
+     *
      * @param capture 图片
      */
-    protected void onDecodeProgress(Bitmap capture){
+    protected void onDecodeProgress(Bitmap capture) {
         // Override if need
     }
 
-    private Bitmap capture(CameraPreview cameraPreview){
+    private Bitmap capture(CameraPreview cameraPreview) {
         final Camera.Parameters parameters = cameraPreview.mCamera.getParameters();
         final int width = parameters.getPreviewSize().width;
         final int height = parameters.getPreviewSize().height;
@@ -81,7 +89,7 @@ public abstract class QRCodeDecodeTask extends AsyncTask<QRCodeDecodeTask.Camera
         return Bitmap.createBitmap(src, offsetX, offsetY, targetWH, targetWH, matrix, true);
     }
 
-    public static final class CameraPreview{
+    public static final class CameraPreview {
 
         private final byte[] mData;
         private final Camera mCamera;
